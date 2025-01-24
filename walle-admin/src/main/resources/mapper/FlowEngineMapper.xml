@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.walle.flow.admin.mapper.FlowEngineMapper">
+
+    <resultMap id="baseResultMap" type="com.walle.flow.admin.domain.entity.FlowEngineDO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="content" column="content"/>
+        <result property="status" column="status"/>
+        <result property="executionMode" column="execution_mode"/>
+        <result property="version" column="version"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="getEngineByName" resultMap="baseResultMap">
+        SELECT * FROM flow_engine WHERE `status` = 'published' and `name` = #{name}
+    </select>
+
+    <update id="updateEngineById" parameterType="com.walle.flow.admin.domain.entity.FlowEngineDO">
+        UPDATE flow_engine
+        <set>
+            <if test="description!= null and description!= ''">
+                description = #{description},
+            </if>
+            <if test="content!= null and content!= ''">
+                content = #{content},
+            </if>
+            <if test="executionMode != null and executionMode != ''">
+                execution_mode = #{executionMode},
+            </if>
+            version = version + 1
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="changeStatus">
+        UPDATE flow_engine SET `status` = #{status} WHERE id = #{id}
+    </update>
+</mapper>

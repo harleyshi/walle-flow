@@ -1,0 +1,139 @@
+.container{
+  padding: 10px 0px 0px 0px;
+}
+
+.edit-container{
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.flow-container-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flow-container {
+  margin: 10px;
+  height: 700px;
+  flex-grow: 1;
+}
+
+.node-list-panel {
+  width: 200px;
+  border-right: 1px solid #e0e0e0;
+  background-color: #f7f7f7; 
+}
+
+.node-header{
+  font-size: 15px;
+  font-weight: bold; 
+  padding: 2px 2px 2px 6px;
+  height: 30px;
+  line-height: 30px;
+}
+.input-with-select{
+  margin-bottom: 10px;
+}
+
+.node-container{
+  height: 30px; 
+  line-height: 30px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease; 
+  font-size: 14px; 
+  color: #555;
+  display: flex;
+  align-items: center; /* 垂直对齐方式，可根据需求调整 */
+}
+
+.node-container:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.node-item {
+  width: 70%;
+  padding: 2px 2px 2px 6px;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.node-extra{
+  width: 30%;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: right;
+}
+
+.node-extra select{
+  width: 100%;
+  box-shadow: 0 0 0 1px var(--el-input-border-color,var(--el-border-color)) inset;
+  border:none;
+  border-radius: 2px;
+  height: 26px;
+  font-size: 12px;
+  color: var(--el-input-text-color, var(--el-text-color-regular));
+}
+
+
+.info-panel {
+  position: fixed;
+  display: flex;    
+  flex-direction: column;
+  top: 300px;
+  right: 54px;
+  width: 320px;
+  background-color: #f9f9f9;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 20px rgba(163, 101, 101, 0.1);
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.info-panel form{
+  padding: 10px;
+}
+
+.node-btn-wrapper {
+  border-top: 1px solid #e0e0e0;
+}
+
+.node-btn-wrapper button {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.el-form-item {
+  margin-bottom: 10px;
+}
+
+.panel-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+/* 弹窗样式 */
+.el-dialog {
+  border-radius: 8px;
+}
+
+/* 输入框样式 */
+.el-input {
+  width: 100%;
+}
