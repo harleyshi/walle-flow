@@ -228,7 +228,6 @@ public class ThreadContext implements Closeable {
         public void run() {
             boolean whileRunning = false;
             // 当真正执行的时候缓存consumer线程的context
-//            try (ThreadContext.StoredContext ignore = stashContext()) {
             // 改为一个普通try，这里不需要保留并还原工作线程的上下文
             try {
                 // 再恢复producer线程的context

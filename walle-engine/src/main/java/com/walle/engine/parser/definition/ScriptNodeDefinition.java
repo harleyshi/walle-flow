@@ -1,7 +1,7 @@
 package com.walle.engine.parser.definition;
 
 import com.walle.engine.parser.DefinitionVisitor;
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 import com.walle.operator.utils.AssertUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,7 +40,7 @@ public class ScriptNodeDefinition extends NodeDefinition {
     }
 
     @Override
-    public NodeType nodeType() {
-        return NodeType.SCRIPT;
+    public ProcessType nodeType() {
+        return ProcessType.SCRIPT;
     }
 }

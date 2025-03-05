@@ -27,9 +27,9 @@ public class RecommendController {
     private EngineManager engineManager;
 
     @GetMapping("/test")
-    public List<String> test() {
+    public List<String> test(String engineName) {
         OrderContext ctx = new OrderContext();
-        GraphExecutor<FlowCtx> executor = engineManager.getEngineExecutor("recommend_for_you");
+        GraphExecutor<FlowCtx> executor = engineManager.getEngineExecutor(engineName);
         executor.execute(ctx);
 
         return ctx.getItems();

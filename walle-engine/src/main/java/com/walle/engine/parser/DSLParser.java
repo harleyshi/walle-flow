@@ -8,8 +8,10 @@ import com.walle.engine.domain.model.FlowDSL;
 import com.walle.engine.domain.model.NodeInfo;
 import com.walle.engine.parser.definition.*;
 import com.walle.operator.FlowCtx;
-import com.walle.operator.common.enums.NodeType;
-import com.walle.operator.utils.DirectedGraph;
+import com.walle.operator.common.enums.ProcessType;
+import com.walle.operator.node.Node;
+import com.walle.operator.utils.DAG;
+import com.walle.operator.utils.DAGOptimizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,27 +26,54 @@ public class DSLParser {
     public DAGEngine<FlowCtx> parse(FlowDSL flowDSL) {
         FlowDSL.Graph graph = flowDSL.getContent();
         ExecutionMode executionMode = ExecutionMode.getByCode(flowDSL.getExecutionMode());
-        // 创建DAG引擎
-        DAGEngine<FlowCtx> dagEngine = new DAGEngine<>(flowDSL.getName(), executionMode, flowDSL.getVersion());
+
+        DAG dag = new DAG();
         // 添加节点和边
         graph.getEdges().forEach(edge -> {
             if(edge.getData() != null){
-                dagEngine.addEdge(edge.getSource(), edge.getTarget(), edge.getLabel());
+                dag.addEdge(new Node(edge.getSource()), new Node(edge.getTarget()), edge.getLabel());
             }else{
-                dagEngine.addEdge(edge.getSource(), edge.getTarget());
+                dag.addEdge(new Node(edge.getSource()), new Node(edge.getTarget()));
             }
         });
+        DAGOptimizer dagOptimizer = new DAGOptimizer(dag);
+        DAG optimizedDag = dagOptimizer.optimize();
+
+        DAGEngine<FlowCtx> dagEngine = new DAGEngine<>(flowDSL.getName(), executionMode, flowDSL.getVersion());
+        dagEngine.setDagGraph(optimizedDag);
 
         // 解析节点算子
         List<NodeDefinition> nodeDefList = new ArrayList<>();
-        graph.getNodes().forEach(node -> nodeDefList.add(parserNode(dagEngine, node)));
+        graph.getNodes().forEach(node -> nodeDefList.add(parserNode(dag, node)));
         BuilderDefinitionVisitor visitor = new BuilderDefinitionVisitor(dagEngine);
         nodeDefList.forEach(visitor::visit);
         return visitor.getEngine();
     }
 
-    private NodeDefinition parserNode(DAGEngine<FlowCtx> dagEngine, NodeInfo node){
-        NodeType nodeType = NodeType.getByCode(node.getType());
+//    public DAGEngine<FlowCtx> parse1(FlowDSL flowDSL) {
+//        FlowDSL.Graph graph = flowDSL.getContent();
+//        ExecutionMode executionMode = ExecutionMode.getByCode(flowDSL.getExecutionMode());
+//        // 创建DAG引擎
+//        DAGEngine<FlowCtx> dagEngine = new DAGEngine<>(flowDSL.getName(), executionMode, flowDSL.getVersion());
+//        // 添加节点和边
+//        graph.getEdges().forEach(edge -> {
+//            if(edge.getData() != null){
+//                dagEngine.addEdge(edge.getSource(), edge.getTarget(), edge.getLabel());
+//            }else{
+//                dagEngine.addEdge(edge.getSource(), edge.getTarget());
+//            }
+//        });
+//
+//        // 解析节点算子
+//        List<NodeDefinition> nodeDefList = new ArrayList<>();
+//        graph.getNodes().forEach(node -> nodeDefList.add(parserNode(dagEngine, node)));
+//        BuilderDefinitionVisitor visitor = new BuilderDefinitionVisitor(dagEngine);
+//        nodeDefList.forEach(visitor::visit);
+//        return visitor.getEngine();
+//    }
+
+    private NodeDefinition parserNode(DAG dagGraph, NodeInfo node){
+        ProcessType nodeType = ProcessType.getByCode(node.getType());
         if(nodeType == null){
             throw new FlowException("节点类型不存在");
         }
@@ -65,7 +94,7 @@ public class DSLParser {
                 scriptNode.setScript(node.getScriptInfo().getContent());
                 return scriptNode;
             case CONDITION:
-                Set<DirectedGraph.Edge<String>> neighbors = dagEngine.getNeighbors(node.getId());
+                Set<DAG.Edge> neighbors = dagGraph.getOutgoingEdges(new Node(node.getId()));
                 // choose条件分支
                 if (neighbors.size() > 2) {
                     return new ChooseNodeDefinition(node.getId(), node.getLabel());

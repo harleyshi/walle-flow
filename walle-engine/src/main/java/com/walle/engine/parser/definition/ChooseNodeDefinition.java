@@ -2,7 +2,7 @@ package com.walle.engine.parser.definition;
 
 
 import com.walle.engine.parser.DefinitionVisitor;
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 
 /**
  * @author harley.shi
@@ -20,7 +20,7 @@ public class ChooseNodeDefinition extends ConditionNodeDefinition {
     }
 
     @Override
-    public NodeType nodeType() {
-        return NodeType.CONDITION;
+    public ProcessType nodeType() {
+        return ProcessType.CONDITION;
     }
 }

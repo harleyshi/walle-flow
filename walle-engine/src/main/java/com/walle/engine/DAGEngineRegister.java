@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DAGEngineRegister {
     private static final DAGEngineRegister REGISTER = new DAGEngineRegister();
 
-    private final Map<String, DAGEngine<FlowCtx>> flowExecutors = new ConcurrentHashMap<>();
+    private final Map<String, DAGEngine<FlowCtx>> engineMap = new ConcurrentHashMap<>();
 
     private DAGEngineRegister(){}
 
@@ -23,11 +23,11 @@ public class DAGEngineRegister {
     }
 
     public void register(DAGEngine<FlowCtx> dagEngine) {
-        flowExecutors.put(dagEngine.getName(), dagEngine);
+        engineMap.put(dagEngine.getName(), dagEngine);
     }
 
     public DAGEngine<FlowCtx> getEngine(String name) {
-        return flowExecutors.get(name);
+        return engineMap.get(name);
     }
 
 }

@@ -1,12 +1,11 @@
 package com.walle.test.springboot.operator;
 
 import com.walle.operator.ComponentFn;
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 import com.walle.operator.node.AbstractOperator;
 import com.walle.test.springboot.context.OrderContext;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,12 +14,12 @@ import java.util.stream.Collectors;
  * @date 2025/1/20
  */
 @Service
-@ComponentFn(name = "ctr_rank", type = NodeType.STANDARD)
+@ComponentFn(name = "ctr_rank", type = ProcessType.STANDARD)
 public class CtrRankNode extends AbstractOperator<OrderContext, List<String>> {
 
     @Override
     public List<String> doExecute(OrderContext ctx) {
-        System.out.println("ctr_rank execute");
+        System.out.println(String.format("[%s]ctr_rank execute", Thread.currentThread().getName()));
         return ctx.getItems().stream().sorted().collect(Collectors.toList());
     }
 

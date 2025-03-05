@@ -7,16 +7,12 @@ import lombok.Getter;
  * @date 2024/10/30
  */
 @Getter
-public enum NodeType {
+public enum ProcessType {
     START("start", "开始节点"),
-
-//    PIPELINE("pipeline", "pipeline节点"),
 
     STANDARD("standard", "标准节点"),
 
-    IF("if", "if节点"),
-
-    CHOOSE("choose", "choose节点"),
+    CONDITION("condition", "条件节点"),
 
     SCRIPT("script", "脚本节点"),
 
@@ -27,13 +23,13 @@ public enum NodeType {
 
     private final String desc;
 
-    NodeType(String code, String desc) {
+    ProcessType(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
-    public static NodeType getByCode(String code) {
-        for (NodeType nodeType : NodeType.values()) {
+    public static ProcessType getByCode(String code) {
+        for (ProcessType nodeType : ProcessType.values()) {
             if (nodeType.getCode().equals(code)) {
                 return nodeType;
             }

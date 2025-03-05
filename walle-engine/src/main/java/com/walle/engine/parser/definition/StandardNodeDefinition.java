@@ -1,7 +1,7 @@
 package com.walle.engine.parser.definition;
 
 import com.walle.engine.parser.DefinitionVisitor;
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,7 +52,7 @@ public class StandardNodeDefinition extends NodeDefinition {
     }
 
     @Override
-    public NodeType nodeType() {
-        return NodeType.STANDARD;
+    public ProcessType nodeType() {
+        return ProcessType.STANDARD;
     }
 }

@@ -1,6 +1,6 @@
 package com.walle.operator;
 
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 import java.lang.annotation.*;
 
 /**
@@ -21,7 +21,7 @@ public @interface ComponentFn {
     /**
      * 节点类型
      */
-    NodeType type() default NodeType.STANDARD;
+    ProcessType type() default ProcessType.STANDARD;
 
     /**
      * 节点版本号

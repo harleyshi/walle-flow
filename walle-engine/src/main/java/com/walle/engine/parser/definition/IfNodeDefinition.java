@@ -1,7 +1,7 @@
 package com.walle.engine.parser.definition;
 
 import com.walle.engine.parser.DefinitionVisitor;
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +24,7 @@ public class IfNodeDefinition extends ConditionNodeDefinition {
     }
 
     @Override
-    public NodeType nodeType() {
-        return NodeType.CONDITION;
+    public ProcessType nodeType() {
+        return ProcessType.CONDITION;
     }
 }

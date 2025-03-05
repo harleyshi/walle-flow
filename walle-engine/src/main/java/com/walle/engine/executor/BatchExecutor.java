@@ -4,7 +4,7 @@
 //import com.walle.engine.threadpool.Parallel;
 //import com.walle.engine.threadpool.ThreadPool;
 //import com.walle.operator.FlowCtx;
-//import com.walle.operator.utils.DirectedGraph;
+//import com.walle.operator.utils.DAG;
 //import org.apache.commons.lang3.StringUtils;
 //
 //import java.util.List;
@@ -103,7 +103,7 @@
 //                // 设置超时时间为 3 秒
 ////                .orTimeout(3000, TimeUnit.MILLISECONDS)
 //                .thenAccept(result -> {
-//                    Set<DirectedGraph.Edge<String>> nodeNeighbors = dagEngine.getNeighbors(nodeId);
+//                    Set<DAG.Edge<String>> nodeNeighbors = dagEngine.getNeighbors(nodeId);
 //                    // 最后一个节点
 //                    if(CollectionUtil.isEmpty(nodeNeighbors)){
 //                        pendingTasks.decrementAndGet();
@@ -111,7 +111,7 @@
 //                        return;
 //                    }
 //                    // 任务完成后的回调逻辑
-//                    for (DirectedGraph.Edge<String> edge : nodeNeighbors) {
+//                    for (DAG.Edge<String> edge : nodeNeighbors) {
 //                        String neighbor = edge.getTarget();
 //                        AtomicInteger inDegree = inDegrees.get(neighbor);
 //

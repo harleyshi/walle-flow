@@ -1,7 +1,7 @@
 package com.walle.engine.parser.definition;
 
 import com.walle.engine.parser.DefinitionVisitor;
-import com.walle.operator.common.enums.NodeType;
+import com.walle.operator.common.enums.ProcessType;
 import lombok.Data;
 
 /**
@@ -40,7 +40,7 @@ public abstract class NodeDefinition implements Validator {
     /**
      * 节点类型
      */
-    public abstract NodeType nodeType();
+    public abstract ProcessType nodeType();
 
     public String identify() {
         return this.identify;

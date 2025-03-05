@@ -1,7 +1,5 @@
 package com.walle.engine.domain.model;
 
-import com.walle.engine.common.enums.ExecutionMode;
-import com.walle.engine.common.enums.StatusEnum;
 import lombok.Data;
 
 import java.util.List;
