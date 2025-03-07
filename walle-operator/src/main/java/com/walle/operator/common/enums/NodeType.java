@@ -10,15 +10,7 @@ import lombok.Getter;
 public enum NodeType {
     START("start", "开始节点"),
 
-//    PIPELINE("pipeline", "pipeline节点"),
-
     STANDARD("standard", "标准节点"),
-
-    IF("if", "if节点"),
-
-    CHOOSE("choose", "choose节点"),
-
-    SCRIPT("script", "脚本节点"),
 
     END("end", "结束节点"),
     ;

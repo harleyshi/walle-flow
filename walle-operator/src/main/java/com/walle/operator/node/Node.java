@@ -1,58 +1,44 @@
 package com.walle.operator.node;
 
-import com.walle.operator.common.constants.Constants;
+import com.walle.operator.FlowCtx;
+import com.walle.operator.component.IComponent;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.*;
 
 /**
  * @author harley.shi
- * @date 2025/3/5
+ * @date 2025/3/6
  */
 public class Node {
 
-    private final List<String> nodeIds = new ArrayList<>();
+    private final List<String> nodeIds;
 
-
-    enum Type {
-        NORMAL,
-        START,
-        END
-    }
+    private final IComponent<FlowCtx, ?> component;
 
     /**
      * 构造器：传入单个节点
      */
-    public Node(String nodeId) {
-//        if(nodeId instanceof String){
-//            if(nodeId.equals(Constants.START_NODE_ID)){
-//                type = Type.START;
-//            }
-//        }
-        this.nodeIds.add(nodeId);
+    public Node(String nodeId, IComponent<FlowCtx, ?> component) {
+        this.nodeIds = List.of(nodeId);
+        this.component = component;
     }
 
     /**
      * 构造器：传入多个节点
      * @param nodeIds 节点列表
      */
-    public Node(List<String> nodeIds) {
-        // 为防止外部修改，创建一个新列表
+    public Node(List<String> nodeIds, IComponent<FlowCtx, ?> component) {
+        this.nodeIds = new ArrayList<>();
         this.nodeIds.addAll(nodeIds);
+        this.component = component;
     }
 
     /**
-     * 判断节点是否只有一个节点
+     * 获取节点算子
      */
-    public boolean isSingle() {
-        return nodeIds.size() == 1;
-    }
-
-    /**
-     * 获取所有节点
-     */
-    public List<String> getNodeIds() {
-        return Collections.unmodifiableList(this.nodeIds);
+    public IComponent<FlowCtx, ?> getComponent() {
+        return component;
     }
 
     /**
@@ -71,7 +57,11 @@ public class Node {
 
     @Override
     public String toString() {
-        return Arrays.toString(nodeIds.toArray());
+        String componentName = null;
+        if(component != null){
+            componentName = component.name();
+        }
+        return componentName +"("+ String.join(",", nodeIds)+")";
     }
 
     @Override
@@ -83,7 +73,7 @@ public class Node {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Node node = (Node) o;
-        return new EqualsBuilder().append(nodeIds, node.nodeIds).isEquals();
+        Node superNode = (Node) o;
+        return new EqualsBuilder().append(nodeIds, superNode.nodeIds).isEquals();
     }
 }

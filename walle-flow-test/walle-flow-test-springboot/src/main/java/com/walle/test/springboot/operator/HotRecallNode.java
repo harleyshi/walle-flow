@@ -1,8 +1,7 @@
 package com.walle.test.springboot.operator;
 
 import com.walle.operator.ComponentFn;
-import com.walle.operator.common.enums.ProcessType;
-import com.walle.operator.node.AbstractOperator;
+import com.walle.operator.node.FallbackOperator;
 import com.walle.test.springboot.context.OrderContext;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +13,8 @@ import java.util.List;
  * @date 2025/1/20
  */
 @Service
-@ComponentFn(name = "hot_recall", type = ProcessType.STANDARD)
-public class HotRecallNode extends AbstractOperator<OrderContext, List<String>> {
+@ComponentFn(name = "hot_recall")
+public class HotRecallNode extends FallbackOperator<OrderContext, List<String>> {
 
     @Override
     public List<String> doExecute(OrderContext ctx) {

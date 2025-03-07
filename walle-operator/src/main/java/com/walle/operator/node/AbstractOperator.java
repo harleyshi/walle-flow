@@ -10,22 +10,12 @@ public abstract class AbstractOperator<C extends FlowCtx, O> implements Operator
 
     @Override
     public O execute(C ctx) {
-        try {
-            return doExecute(ctx);
-        }catch (Exception e){
-            System.out.println("执行失败：" + e.getMessage());
-            return doFallback(ctx);
-        }
+        return doExecute(ctx);
     }
 
     /**
      * 执行节点
      */
     public abstract O doExecute(C ctx);
-
-    /**
-     * 处理失败
-     */
-    public abstract O doFallback(C ctx);
 
 }

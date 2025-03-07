@@ -56,28 +56,4 @@ public class CountDownWatch {
         return (System.nanoTime() + elapseTime - stopTime) / NANO_2_MILLIS;
     }
 
-//    CountDownWatch watch = CountDownWatch.createAndStart(timeout, TimeUnit.MILLISECONDS);
-//        for (
-//    Future<PredictResult> result : results) {
-//        // 倒计时方式，控制总的循环结束时间
-//        PredictResult pr = null;
-//        try {
-//            pr = result.get(watch.millisLeft(), TimeUnit.MILLISECONDS);
-//            List<WeightItem> items = pr.getWeightItems();
-//            System.arraycopy(items.toArray(), 0, dest, destPos, items.size());
-//            destPos += items.size();
-//        } catch (Exception e) {
-//            if (e instanceof TimeoutException) {
-//                log.error("timeout for parallel predicting tasks, time cost {}ms", watch.elapsedMillis());
-//            } else if (e instanceof ArrayIndexOutOfBoundsException) {
-//                log.error("expected item size {}, actual got {}, destPos {}, dest size {}",
-//                        null == pr ? 0 : pr.getExpectSize(), null == pr ? 0 : pr.getWeightItems().size(),
-//                        destPos, dest.length);
-//            } else {
-//                log.error("failed to get all future task for predicting, time cost {}ms", watch.elapsedMillis(), e);
-//            }
-//            unfinished = true;
-//            break;
-//        }
-//    }
 }

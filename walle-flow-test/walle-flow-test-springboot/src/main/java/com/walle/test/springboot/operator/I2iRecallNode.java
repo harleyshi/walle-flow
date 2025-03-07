@@ -1,8 +1,9 @@
 package com.walle.test.springboot.operator;
 
 import com.walle.operator.ComponentFn;
-import com.walle.operator.common.enums.ProcessType;
+import com.walle.operator.common.enums.NodeType;
 import com.walle.operator.node.AbstractOperator;
+import com.walle.operator.node.FallbackOperator;
 import com.walle.test.springboot.context.OrderContext;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,8 @@ import java.util.List;
  * @date 2025/1/20
  */
 @Service
-@ComponentFn(name = "i2i_recall", type = ProcessType.STANDARD)
-public class I2iRecallNode extends AbstractOperator<OrderContext, List<String>> {
+@ComponentFn(name = "i2i_recall")
+public class I2iRecallNode extends FallbackOperator<OrderContext, List<String>> {
     @Override
     public List<String> doExecute(OrderContext ctx) {
         System.out.println(String.format("[%s]i2i_recall execute", Thread.currentThread().getName()));
@@ -24,6 +25,7 @@ public class I2iRecallNode extends AbstractOperator<OrderContext, List<String>> 
             result.add("i2i_recall_item_" + i);
         }
         ctx.addItems(result);
+
         return result;
     }
 

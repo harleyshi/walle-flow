@@ -12,9 +12,21 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2024/7/1
  */
 @Slf4j
-@Getter
-@Setter
-public class StandardComponent<C extends FlowCtx, O> extends AbstractComponent<C, O> {
+public class StandardComponent<C extends FlowCtx, O> implements IComponent<C, O> {
+    /**
+     * 组件名
+     */
+    private final String name;
+
+    /**
+     * 超时时间
+     */
+    private Integer timeout;
+
+    /**
+     * 是否忽略异常
+     */
+    private boolean ignoreException = false;
 
     /**
      * 算子
@@ -22,16 +34,38 @@ public class StandardComponent<C extends FlowCtx, O> extends AbstractComponent<C
     private Operator<C, O> operator;
 
     public StandardComponent(String name) {
-        super(name);
+        this.name = name;
     }
 
-    public StandardComponent(String name, Operator<C, O> operator) {
-        super(name);
+    public void setOperator(Operator<C, O> operator) {
         this.operator = operator;
     }
 
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
+    }
+
+    public void setIgnoreException(boolean ignoreException) {
+        this.ignoreException = ignoreException;
+    }
+
     @Override
-    public O doExecute(C context) {
-        return operator.execute(context);
+    public String name() {
+        return this.name;
+    }
+
+    @Override
+    public O execute(C ctx) {
+        try {
+            return operator.execute(ctx);
+        } catch (Throwable ex) {
+            // 忽略异常：直接返回空结果
+            if(ignoreException){
+                // 如果节点设置忽略异常的话，当节点发送异常时直接忽略
+                log.error("[{}] operator execute error, but ignore it. error message: {}", name, ex.getMessage());
+                return null;
+            }
+            throw ex;
+        }
     }
 }

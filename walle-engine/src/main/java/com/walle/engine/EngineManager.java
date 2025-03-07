@@ -1,6 +1,6 @@
 package com.walle.engine;
 
-import com.walle.engine.executor.GraphExecutor;
+import com.walle.engine.core.executor.GraphExecutor;
 import com.walle.operator.FlowCtx;
 
 /**

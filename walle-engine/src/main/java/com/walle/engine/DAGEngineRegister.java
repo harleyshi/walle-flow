@@ -1,7 +1,6 @@
 package com.walle.engine;
 
-
-import com.walle.engine.executor.DAGEngine;
+import com.walle.engine.core.Engine;
 import com.walle.operator.FlowCtx;
 
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DAGEngineRegister {
     private static final DAGEngineRegister REGISTER = new DAGEngineRegister();
 
-    private final Map<String, DAGEngine<FlowCtx>> engineMap = new ConcurrentHashMap<>();
+    private final Map<String, Engine<FlowCtx>> engineMap = new ConcurrentHashMap<>();
 
     private DAGEngineRegister(){}
 
@@ -22,11 +21,11 @@ public class DAGEngineRegister {
         return REGISTER;
     }
 
-    public void register(DAGEngine<FlowCtx> dagEngine) {
-        engineMap.put(dagEngine.getName(), dagEngine);
+    public void register(Engine<FlowCtx> dagEngine) {
+        engineMap.put(dagEngine.name(), dagEngine);
     }
 
-    public DAGEngine<FlowCtx> getEngine(String name) {
+    public Engine<FlowCtx> getEngine(String name) {
         return engineMap.get(name);
     }
 

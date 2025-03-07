@@ -1,8 +1,9 @@
 package com.walle.test.springboot.operator;
 
 import com.walle.operator.ComponentFn;
-import com.walle.operator.common.enums.ProcessType;
+import com.walle.operator.common.enums.NodeType;
 import com.walle.operator.node.AbstractOperator;
+import com.walle.operator.node.FallbackOperator;
 import com.walle.test.springboot.context.OrderContext;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
  * @date 2025/1/20
  */
 @Service
-@ComponentFn(name = "ctr_rank", type = ProcessType.STANDARD)
-public class CtrRankNode extends AbstractOperator<OrderContext, List<String>> {
+@ComponentFn(name = "ctr_rank")
+public class CtrRankNode extends FallbackOperator<OrderContext, List<String>> {
 
     @Override
     public List<String> doExecute(OrderContext ctx) {

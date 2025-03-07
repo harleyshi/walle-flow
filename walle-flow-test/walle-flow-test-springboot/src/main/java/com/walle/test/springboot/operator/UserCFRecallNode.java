@@ -1,7 +1,7 @@
 package com.walle.test.springboot.operator;
 
 import com.walle.operator.ComponentFn;
-import com.walle.operator.common.enums.ProcessType;
+import com.walle.operator.common.enums.NodeType;
 import com.walle.operator.node.AbstractOperator;
 import com.walle.test.springboot.context.OrderContext;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2025/1/20
  */
 @Service
-@ComponentFn(name = "user_cf_recall", type = ProcessType.STANDARD)
+@ComponentFn(name = "user_cf_recall")
 public class UserCFRecallNode extends AbstractOperator<OrderContext, List<String>> {
     @Override
     public List<String> doExecute(OrderContext ctx) {
@@ -25,10 +25,5 @@ public class UserCFRecallNode extends AbstractOperator<OrderContext, List<String
         }
         ctx.addItems(result);
         return result;
-    }
-
-    @Override
-    public List<String> doFallback(OrderContext ctx) {
-        return null;
     }
 }

@@ -17,7 +17,7 @@ import java.util.Map;
  * <p>
  *
  * @author copied from es
- * Created by maoxiajun on 2019-02-11.
+ * Created by harley.shi on 2019-02-11.
  */
 public class ThreadContext implements Closeable {
 

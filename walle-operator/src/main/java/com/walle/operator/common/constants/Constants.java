@@ -7,7 +7,11 @@ import com.walle.operator.node.Node;
  * @date 2025/3/5
  */
 public interface Constants {
-    Node START_NODE = new Node("0");
+    String START_NODE = "0";
 
-    Node END_NODE = new Node("99999999");
+    String END_NODE = "99999999";
+
+    Node START_NODE_DEF = new Node(START_NODE, null);
+
+    Node END_NODE_DEF = new Node(END_NODE, null);
 }

@@ -5,7 +5,7 @@ import com.walle.flow.admin.common.R;
 import com.walle.flow.admin.domain.vo.base.PageResp;
 import com.walle.flow.admin.domain.vo.req.QueryOperatorsReq;
 import com.walle.flow.admin.domain.vo.resp.OperatorsResp;
-import com.walle.operator.OperatorHolder;
+import com.walle.operator.OperatorDef;
 import com.walle.operator.OperatorsRegister;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -23,40 +23,13 @@ import java.util.Random;
 @RequestMapping("/api/v1/operators")
 public class OperatorsController {
 
-//    @GetMapping("/list")
-//    public R<PageResp<OperatorsResp>> list(QueryOperatorsReq req) {
-//        log.info("OperatorsController list req: {}", JSON.toJSONString(req));
-//        List<OperatorsResp> list = new ArrayList<>();
-//        for (int i = 0; i < req.getPageSize(); i++) {
-//            OperatorsResp resp = new OperatorsResp();
-//            if(i%2==0){
-//                resp.setType(OpsNodeType.STANDARD.getCode());
-//            }else{
-//                resp.setType(OpsNodeType.CONDITION.getCode());
-//                if(i%3==0){
-//                    resp.setIsScript(true);
-//                }
-//            }
-//            resp.setLabel("节点-"+new Random().nextInt(10)+1);
-//            OperatorsResp.AdvancedConfig advancedConfig = new OperatorsResp.AdvancedConfig();
-//            advancedConfig.setTimeout(new Random().nextInt(1000)+1);
-//            resp.setConfig(advancedConfig);
-//            resp.setVersion(new Random().nextInt(1000)+1+"");
-//            list.add(resp);
-//        }
-//        PageResp<OperatorsResp> pageResp = new PageResp<>();
-//        pageResp.setTotal(100L);
-//        pageResp.setRecords(list);
-//        return R.ok(pageResp);
-//    }
-
     @GetMapping("/list")
     public R<PageResp<OperatorsResp>> list(QueryOperatorsReq req) {
         log.info("OperatorsController list req: {}", JSON.toJSONString(req));
         OperatorsRegister operatorsRegister = OperatorsRegister.getInstance();
-        List<OperatorHolder<?, ?>> operatorNames = operatorsRegister.operatorData();
+        List<OperatorDef<?, ?>> operatorNames = operatorsRegister.operatorData();
         List<OperatorsResp> list = new ArrayList<>();
-        for (OperatorHolder<?, ?> operatorHolder : operatorNames) {
+        for (OperatorDef<?, ?> operatorHolder : operatorNames) {
             OperatorsResp resp = new OperatorsResp();
             resp.setType(operatorHolder.getType());
             resp.setLabel(operatorHolder.getName());
@@ -64,6 +37,8 @@ public class OperatorsController {
 
             OperatorsResp.AdvancedConfig advancedConfig = new OperatorsResp.AdvancedConfig();
             advancedConfig.setTimeout(new Random().nextInt(1000) + 1);
+            advancedConfig.setIgnoreException(true);
+            advancedConfig.setParams("测试参数");
             resp.setConfig(advancedConfig);
             list.add(resp);
         }

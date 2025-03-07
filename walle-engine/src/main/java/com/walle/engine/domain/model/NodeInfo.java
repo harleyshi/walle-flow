@@ -20,14 +20,9 @@ public class NodeInfo {
 
     /**
      * 节点类型
-     * @see com.flow.engine.common.enums.NodeTypeEnums
+     * @see com.walle.operator.common.enums.NodeType
      */
     private String type;
-
-    /**
-     * 脚本信息（节点类型是脚本节点是用）
-     */
-    private ScriptInfo scriptInfo;
 
     /**
      * 节点配置
@@ -51,19 +46,6 @@ public class NodeInfo {
         this.id = id;
     }
 
-    @Data
-    public static class ScriptInfo{
-        /**
-         * 脚本语言
-         */
-        private String scriptLang;
-
-        /**
-         * 脚本内容
-         */
-        private String content;
-    }
-
     /**
      * 高级配置
      */
@@ -83,11 +65,6 @@ public class NodeInfo {
          * 是否忽略异常
          */
         private Boolean ignoreException = Boolean.FALSE;
-
-        /**
-         * 是否异步
-         */
-        private Boolean async = Boolean.FALSE;
 
     }
 

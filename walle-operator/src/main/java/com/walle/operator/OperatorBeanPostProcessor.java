@@ -1,6 +1,6 @@
 package com.walle.operator;
 
-import com.walle.operator.common.enums.ProcessType;
+import com.walle.operator.common.enums.NodeType;
 import com.walle.operator.node.Operator;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
@@ -35,8 +35,7 @@ public class OperatorBeanPostProcessor implements BeanPostProcessor {
             throw new RuntimeException("operator name already exists");
         }
         String version = componentFn.version();
-        ProcessType type = componentFn.type();
-        operatorsRegister.register(operatorName, new OperatorHolder<>(operatorName, type.getCode(), version, operator));
+        operatorsRegister.register(new OperatorDef<>(operatorName, NodeType.STANDARD.getCode(), version, operator));
         return bean;
     }
 }

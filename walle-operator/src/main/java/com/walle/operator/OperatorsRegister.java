@@ -18,7 +18,7 @@ public class OperatorsRegister {
 
     private static final OperatorsRegister INSTANCE = new OperatorsRegister();
 
-    private final Map<String, OperatorHolder<?, ?>> operatorHolderMap = new HashMap<>();
+    private final Map<String, OperatorDef<?, ?>> operatorHolderMap = new HashMap<>();
 
     private OperatorsRegister() {
 
@@ -28,22 +28,28 @@ public class OperatorsRegister {
         return INSTANCE;
     }
 
-    public <C extends FlowCtx, O> void register(String name, OperatorHolder<C, O> operatorHolder) {
-        this.operatorHolderMap.put(name, operatorHolder);
+    public <C extends FlowCtx, O> void register(OperatorDef<C, O> operatorDef) {
+        String key = getKey(operatorDef.getName(), operatorDef.getVersion());
+        this.operatorHolderMap.put(key, operatorDef);
     }
 
     @SuppressWarnings("unchecked")
-    public <C extends FlowCtx, O> Operator<C, O> getOperator(String name) {
-        OperatorHolder<C, O> operatorHolder = (OperatorHolder<C, O>) this.operatorHolderMap.get(name);
-        AssertUtil.notNull(operatorHolder, String.format("[%s] 算子不存在或未定义", name));
-        return operatorHolder.getOperator();
+    public <C extends FlowCtx, O> Operator<C, O> getOperator(String name, String version) {
+        String key = getKey(name, version);
+        OperatorDef<C, O> operatorDef = (OperatorDef<C, O>) this.operatorHolderMap.get(key);
+        AssertUtil.notNull(operatorDef, String.format("[%s] 算子不存在或未定义", key));
+        return operatorDef.getOperator();
     }
 
-    public List<OperatorHolder<?, ?>> operatorData() {
+    public List<OperatorDef<?, ?>> operatorData() {
         return new ArrayList<>(operatorHolderMap.values());
     }
 
     public boolean containsKey(String name) {
         return this.operatorHolderMap.containsKey(name);
+    }
+
+    private String getKey(String name, String version){
+        return name + "-" + version;
     }
 }

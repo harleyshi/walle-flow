@@ -10,7 +10,6 @@ import lombok.Getter;
 public enum OpsNodeType {
     STANDARD("standard", "标准节点"),
 
-    CONDITION("condition", "条件节点")
     ;
 
     private final String code;

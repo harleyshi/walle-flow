@@ -26,16 +26,6 @@ public class OperatorsResp {
     private String type;
 
     /**
-     * 是否是脚本
-     */
-    private Boolean isScript = Boolean.FALSE;
-
-    /**
-     * 脚本内容
-     */
-    private String script;
-
-    /**
      * 配置参数
      */
     private AdvancedConfig config;
@@ -59,11 +49,6 @@ public class OperatorsResp {
          * 算子参数
          */
         private String params;
-
-        /**
-         * 回滚算子参数
-         */
-        private String rollbackParams;
 
         /**
          * 超时时间

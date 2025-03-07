@@ -13,7 +13,6 @@
               <el-select v-model="form.executionMode" placeholder="请选择">
                 <el-option label="同步" value="sync"></el-option>
                 <el-option label="异步" value="async"></el-option>
-                <el-option label="批量" value="batch"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -54,7 +53,7 @@
           @dragstart="handleDragStart($event, node, '2')"
           >
           <div class="node-item">
-            {{node.label}} ({{node.type}})
+            {{node.label}}
           </div>
           <div class="node-extra">
             <select >
@@ -104,28 +103,16 @@
         </div>
         <el-form :model="selectedNode" label-width="80px">
           <el-form-item label="节点id：">
-            <span>{{ selectedNode.id }}</span>
+            <span>{{ selectedNode.id }} </span>
           </el-form-item>
-          <el-form-item label="节点名称:" v-if="selectedNode.isScript === true">
-            <el-input v-model="selectedNode.label"  placeholder="请输入名称"/>
+          <el-form-item label="节点名称:">
+            <span>{{ selectedNode.label }} ({{ selectedNode.version }})</span>
           </el-form-item>
-          <el-form-item label="节点名称:" v-else>
-            <span>{{ selectedNode.label }}</span>
-          </el-form-item>
-
           <el-form-item label="节点类型:">
             <span>{{ selectedNode.type }}</span>
           </el-form-item>
 
-          <div v-if="selectedNode.type === 'condition'">
-            <el-form-item v-if="selectedNode.isScript === true"  label="脚本">
-              <el-input  v-model="selectedNode.script" :rows="6" type="textarea" placeholder="请输入脚本"></el-input>
-            </el-form-item>
-          </div>
-          
-          <div v-else-if="selectedNode.type ==='start' || selectedNode.type === 'end'"></div>
-
-          <template v-else>
+          <template v-if="selectedNode.type === 'standard'">
             <el-form-item label="超时时间:">
               <el-input-number v-model="selectedNode.config.timeout" :step="1"/>
             </el-form-item>
@@ -137,14 +124,10 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="是否异步:">
-              <el-radio-group v-model="selectedNode.config.async">
-                <el-radio :label="true">是</el-radio>
-                <el-radio :label="false">否</el-radio>
-              </el-radio-group>
+            <el-form-item  label="节点参数">
+              <el-input  v-model="selectedNode.config.params" :rows="6" type="textarea" placeholder="请输入参数"></el-input>
             </el-form-item>
-
-          </template> 
+          </template>
         </el-form>
         
         <!-- 底部按钮区域 -->
@@ -185,7 +168,7 @@ import {engineDetail, operators, engineEdit } from '@/api/module/api';
 import { ElMessage } from "element-plus";
 import { useRoute, useRouter } from "vue-router";
 import ToolsControls from './tools.vue'
-import Condition from "./node/condition.vue";
+//import Condition from "./node/condition.vue";
 import Standard from "./node/standard.vue";
 import Start from "./node/start.vue";
 import End from "./node/end.vue";
@@ -206,6 +189,8 @@ const totalOperators = ref(0);
 // 画布数据
 const data = [];
 const elements = ref(data);
+const START_NODE_ID = '0';
+const END_NODE_ID = '99999999';
 
 // 选中的节点信息
 const selectedNode = ref(null);
@@ -216,14 +201,12 @@ const form = ref({
   name: "",
   description: "",
   executionMode: "sync",
-  script: "",
-  isScript: false,
   content: ""
 });
 
 // 定义节点类型
 const nodeTypes = ref({
-  condition: markRaw(Condition),
+  //condition: markRaw(Condition),
   standard: markRaw(Standard),
   start: markRaw(Start),
   end: markRaw(End)
@@ -231,7 +214,6 @@ const nodeTypes = ref({
 
 // 动态节点
 const dynamicNodeList = ref([
-  { label: "条件节点", type: "condition"},
   { label: "开始节点", type: "start"},
   { label: "结束节点", type: "end"},
 ]);
@@ -265,8 +247,9 @@ const loadEngineData = async (id: string) => {
       const { nodes = [], edges = [] } = content;
       elements.value = [...nodes, ...edges];
       if (nodes.length > 0) {
-        const maxNodeId = Math.max(...nodes.map((node: { id: string }) => parseInt(node.id, 10)));
-        nodeIdCounter = maxNodeId + 1; 
+        const validNodes = nodes.filter((node: { id: string }) => node.id !== END_NODE_ID);
+        const maxNodeId = Math.max(...validNodes.map((node: { id: string }) => parseInt(node.id, 10)));
+        nodeIdCounter = maxNodeId + 1;
       } else {
         nodeIdCounter = 1;
       }
@@ -442,7 +425,6 @@ const handleNodeClick = (event: any) => {
 };
 
 
-
 /****************************算子列表相关函数****************/
 const searchOperatorsByName = () => {
   pageNo.value = 1;
@@ -480,18 +462,13 @@ const handleDragOver = (event: DragEvent) => {
 // 拖拽开始事件，设置拖拽节点类型
 const handleDragStart = (event: DragEvent, node: any, opsType: string) => {
   if (opsType === '1') {
-    if (node.type === 'condition') {
-      node.script = "";
-      node.isScript = true;
-    }else if (node.type === 'start') {
-      node.isScript = false;
+    if (node.type === 'start') {
       node.config = {
         timeout: 0,
         ignoreException: false,
         async: false
       };
     }else if (node.type === 'end') {
-      node.isScript = false;
       node.config = {
         timeout: 0,
         ignoreException: false,
@@ -514,10 +491,9 @@ const handleNodeDrop = (event: DragEvent) => {
   const addNode = {
     id: generateNodeId(nodeData),
     type: nodeData.type,
+    version: nodeData.version,
     position: { x: positionX, y: positionY },
     label: nodeData.label,
-    isScript: nodeData.isScript,
-    script: nodeData.script,
     config: nodeData.config
   };
   elements.value.push(addNode);
@@ -529,10 +505,10 @@ const generateNodeId = (nodeData) => {
   let nodeId;
   switch (nodeData.type) {
     case 'start':
-      nodeId = '0';
+      nodeId = START_NODE_ID;
       break;
     case 'end':
-      nodeId = '99999999';
+      nodeId = END_NODE_ID;
       break;
     default:
       nodeId = `${nodeIdCounter++}`;

@@ -1,7 +1,7 @@
 package com.walle.test.springboot.operator;
 
 import com.walle.operator.ComponentFn;
-import com.walle.operator.common.enums.ProcessType;
+import com.walle.operator.common.enums.NodeType;
 import com.walle.operator.node.AbstractOperator;
 import com.walle.test.springboot.context.OrderContext;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @date 2025/1/20
  */
 @Service
-@ComponentFn(name = "top_rerank", type = ProcessType.STANDARD)
+@ComponentFn(name = "top_rerank", version = "1.0.3")
 public class TopReRankNode extends AbstractOperator<OrderContext, List<String>> {
 
     @Override
@@ -23,10 +23,6 @@ public class TopReRankNode extends AbstractOperator<OrderContext, List<String>> 
         List<String> items = List.of("top-item-1");
         ctx.addItems(items);
         return ctx.getItems().stream().sorted().collect(Collectors.toList());
-    }
-
-    @Override
-    public List<String> doFallback(OrderContext ctx) {
-        return null;
+//        throw   new RuntimeException("top_rerank");
     }
 }

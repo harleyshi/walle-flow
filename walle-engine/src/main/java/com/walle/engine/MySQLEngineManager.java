@@ -1,9 +1,9 @@
 package com.walle.engine;
 
 import com.walle.engine.domain.model.FlowDSL;
-import com.walle.engine.executor.DAGEngine;
-import com.walle.engine.executor.GraphExecutor;
-import com.walle.engine.parser.DSLParser;
+import com.walle.engine.core.Engine;
+import com.walle.engine.core.executor.GraphExecutor;
+import com.walle.engine.core.parser.DSLParser;
 import com.walle.engine.loader.EngineLoader;
 import com.walle.operator.FlowCtx;
 import java.util.List;
@@ -27,14 +27,14 @@ public class MySQLEngineManager implements EngineManager {
         this.dslParser = new DSLParser();
         this.engineLoader = engineLoader;
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkForUpdates, 0, 1, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::checkForUpdates, 10, 3, TimeUnit.SECONDS);
     }
 
     @Override
     public void load() {
         List<FlowDSL> flowList = engineLoader.loadPublishedEngines();
         for (FlowDSL flowDSL : flowList) {
-            DAGEngine<FlowCtx> dagEngine = dslParser.parse(flowDSL);
+            Engine<FlowCtx> dagEngine = dslParser.parse(flowDSL);
             // 注册DAG引擎
             dagEngineRegister.register(dagEngine);
         }
@@ -42,16 +42,20 @@ public class MySQLEngineManager implements EngineManager {
 
     @Override
     public GraphExecutor<FlowCtx> getEngineExecutor(String engineName) {
-        DAGEngine<FlowCtx> dagEngine = Objects.requireNonNull(dagEngineRegister.getEngine(engineName),
+        Engine<FlowCtx> engine = Objects.requireNonNull(dagEngineRegister.getEngine(engineName),
                 String.format("engine %s not found", engineName));
-        return dagEngine.buildExecutor();
+        return engine.buildExecutor();
     }
 
-    // TODO 更新策略待定
     private void checkForUpdates() {
         List<FlowDSL> flowList = engineLoader.loadAllEngineList();
         for (FlowDSL flowDSL : flowList) {
-            DAGEngine<FlowCtx> dagEngine = dslParser.parse(flowDSL);
+            Engine<FlowCtx> engine = dagEngineRegister.getEngine(flowDSL.getName());
+            // 版本没发生变化，不需要更新
+            if(engine != null && flowDSL.getVersion().equals(engine.version())){
+                return;
+            }
+            Engine<FlowCtx> dagEngine = dslParser.parse(flowDSL);
             // 注册DAG引擎
             dagEngineRegister.register(dagEngine);
         }
