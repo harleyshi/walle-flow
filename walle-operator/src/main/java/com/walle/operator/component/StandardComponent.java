@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author harley.shi
  * @date 2024/7/1
  */
+@Setter
 @Slf4j
 public class StandardComponent<C extends FlowCtx, O> implements IComponent<C, O> {
     /**
@@ -29,24 +30,17 @@ public class StandardComponent<C extends FlowCtx, O> implements IComponent<C, O>
     private boolean ignoreException = false;
 
     /**
+     * 参数
+     */
+    private String params;
+
+    /**
      * 算子
      */
     private Operator<C, O> operator;
 
     public StandardComponent(String name) {
         this.name = name;
-    }
-
-    public void setOperator(Operator<C, O> operator) {
-        this.operator = operator;
-    }
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
-    }
-
-    public void setIgnoreException(boolean ignoreException) {
-        this.ignoreException = ignoreException;
     }
 
     @Override

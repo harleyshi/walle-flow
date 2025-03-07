@@ -86,13 +86,14 @@ public class DSLParser {
             NodeInfo.NodeConfig config = node.getConfig();
             component.setTimeout(config.getTimeout());
             component.setIgnoreException(config.getIgnoreException());
-            component.setOperator(builderOperator(operatorName, operatorVersion, config.getParams()));
+            component.setParams(config.getParams());
+            component.setOperator(builderOperator(operatorName, operatorVersion));
             components.put(node.getId(), component);
         }
         return components;
     }
 
-    protected <C extends FlowCtx, O> Operator<C, O> builderOperator(String name, String version, String params) {
+    protected <C extends FlowCtx, O> Operator<C, O> builderOperator(String name, String version) {
         OperatorsRegister operatorsRegister = OperatorsRegister.getInstance();
         return operatorsRegister.getOperator(name, version);
     }
