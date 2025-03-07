@@ -1,5 +1,6 @@
 package com.walle.test.springboot.context;
 
+import com.walle.operator.AbstractFlowCtx;
 import com.walle.operator.FlowCtx;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author harley.shi
  * @date 2025/1/20
  */
-public class OrderContext implements FlowCtx {
+public class OrderContext extends AbstractFlowCtx {
 
     private List<String> items = new CopyOnWriteArrayList<>();
 
@@ -19,20 +20,5 @@ public class OrderContext implements FlowCtx {
 
     public List<String> getItems() {
         return items;
-    }
-
-    @Override
-    public String getContextId() {
-        return null;
-    }
-
-    @Override
-    public void setAttribute(String key, Object value) {
-
-    }
-
-    @Override
-    public Object getAttribute(String key) {
-        return null;
     }
 }
