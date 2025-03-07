@@ -55,10 +55,13 @@ public class AsyncEngine<C extends FlowCtx> extends DAG<Node> implements Engine<
      */
     public void printGraph() {
         List<Node> roots = getNodesWithZeroInDegree();
+        System.out.println();
+        System.out.println(name + " (" + version+")");
         // 对于每个入度为 0 的节点，递归打印其子树
         for (int i = 0; i < roots.size(); i++) {
             printGraphRecursive(roots.get(i), "", i == roots.size() - 1);
         }
+        System.out.println("-------------------------------------------------------------------------------------------");
     }
 
     /**
