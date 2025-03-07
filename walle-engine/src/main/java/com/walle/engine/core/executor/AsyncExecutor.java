@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -62,12 +63,10 @@ public class AsyncExecutor<C extends FlowCtx> implements GraphExecutor<C> {
         Node node;
         while (true){
             try {
-                // 从任务队列中获取任务，等待最多 100 毫秒
-                node = workQueue.take();
-                if(node.equals(Constants.END_NODE_DEF)){
+                node = workQueue.poll(100L, TimeUnit.MILLISECONDS);
+                if(null == node || node.equals(Constants.END_NODE_DEF)){
                     break;
                 }
-                // 提交任务给Worker线程池执行
                 executeWorkAsync(node, context);
             } catch (InterruptedException e) {
                 log.error("{} event loop interrupted.", dagEngine.name(), e);
@@ -80,7 +79,6 @@ public class AsyncExecutor<C extends FlowCtx> implements GraphExecutor<C> {
      * 提交任务到任务队列
      */
     private void submitWork(Node node) {
-        // 将任务加入队列
         workQueue.add(node);
     }
 
@@ -105,12 +103,9 @@ public class AsyncExecutor<C extends FlowCtx> implements GraphExecutor<C> {
 
     private void handlePostExecution(Node node) {
        try{
-           // 更新后续节点入度并提交任务
-           Set<DAG.Edge<Node>> nodeNeighbors = dagEngine.getOutgoingEdges(node);
-           for (DAG.Edge<Node> edge : nodeNeighbors) {
+           for (DAG.Edge<Node> edge : dagEngine.getOutgoingEdges(node)) {
                Node neighbor = edge.getTarget();
-               AtomicInteger inDegree = inDegrees.get(neighbor);
-               if (inDegree.decrementAndGet() == 0) {
+               if (inDegrees.get(neighbor).decrementAndGet() == 0) {
                    submitWork(neighbor);
                }
            }
