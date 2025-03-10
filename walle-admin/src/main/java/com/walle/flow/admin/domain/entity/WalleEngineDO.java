@@ -14,8 +14,8 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@TableName("flow_engine")
-public class FlowEngineDO {
+@TableName("walle_engine")
+public class WalleEngineDO {
     @TableId(value = "id")
     private Long id;
 

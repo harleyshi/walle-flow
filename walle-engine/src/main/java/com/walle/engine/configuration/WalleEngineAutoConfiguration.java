@@ -21,18 +21,18 @@ import javax.sql.DataSource;
  * @date 2025/1/23
  */
 @Configuration
-@EnableConfigurationProperties({WalleFlowProperties.class})
+@EnableConfigurationProperties({WalleEngineProperties.class})
 public class WalleEngineAutoConfiguration {
 
     @Bean("walleFlowDataSource")
-    public DataSource walleFlowDataSource(WalleFlowProperties properties) {
+    public DataSource walleFlowDataSource(WalleEngineProperties properties) {
         String storeType = properties.getStoreType();
         try {
             if(StringUtils.isBlank(storeType)){
                 throw new RuntimeException("storeType property cannot be null");
             }
             if(storeType.equalsIgnoreCase("mysql")){
-                WalleFlowProperties.MySQLConfig mySQLConfig = properties.getMysqlConfig();
+                WalleEngineProperties.MySQLConfig mySQLConfig = properties.getMysqlConfig();
                 DruidDataSource dataSource = new DruidDataSource();
                 dataSource.setUrl(mySQLConfig.getUrl());
                 dataSource.setUsername(mySQLConfig.getUsername());

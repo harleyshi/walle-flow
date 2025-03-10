@@ -9,7 +9,7 @@ import java.util.Date;
  * @date 2024/10/30
  */
 @Data
-public class EditFlowEngineReq {
+public class EditWalleEngineReq {
     private Long id;
 
     private String name;

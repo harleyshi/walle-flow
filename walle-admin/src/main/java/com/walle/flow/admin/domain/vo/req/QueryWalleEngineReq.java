@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2024-07-08 10:32:25
  */
 @Data
-public class QueryFlowEngineReq extends PageReq implements Serializable{
+public class QueryWalleEngineReq extends PageReq implements Serializable{
 
     private String name;
 }

@@ -3,8 +3,6 @@ package com.walle.engine.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Date;
 
@@ -12,8 +10,8 @@ import java.util.Date;
  * @author harley.shi
  * @date 2024/10/30
  */
-@TableName("flow_engine")
-public class FlowEngineDO {
+@TableName("walle_engine")
+public class WalleEngineDO {
 
     @TableId(value = "id")
     private Long id;

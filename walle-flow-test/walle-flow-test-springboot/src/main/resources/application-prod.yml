@@ -3,7 +3,7 @@ server:
 
 walle:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/flow_engine?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&AllowPublicKeyRetrieval=True
+    url: jdbc:mysql://127.0.0.1:3306/walle-flow?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&AllowPublicKeyRetrieval=True
     username: root
     password: root
 
@@ -25,7 +25,7 @@ spring:
       datasource:
         master:
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://127.0.0.1:3306/flow_engine?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&AllowPublicKeyRetrieval=True
+          url: jdbc:mysql://127.0.0.1:3306/walle-flow?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&AllowPublicKeyRetrieval=True
           username: root
           password: 123456
 mybatis-plus:

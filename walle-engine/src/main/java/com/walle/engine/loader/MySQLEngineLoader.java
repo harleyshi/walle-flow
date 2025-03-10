@@ -1,7 +1,7 @@
 package com.walle.engine.loader;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.walle.engine.domain.entity.FlowEngineDO;
+import com.walle.engine.domain.entity.WalleEngineDO;
 import com.walle.engine.domain.model.FlowDSL;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.Environment;
@@ -57,7 +57,7 @@ public class MySQLEngineLoader implements EngineLoader {
     @Override
     public List<FlowDSL> loadAllEngineList() {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            List<FlowEngineDO> engineList = sqlSession.selectList("com.walle.engine.loader.mapper.FlowEngineMapper.listAll");
+            List<WalleEngineDO> engineList = sqlSession.selectList("com.walle.engine.loader.mapper.WalleEngineMapper.listAll");
             return engineList.stream()
                     .map(this::engineDoConvertToFlowDSL)
                     .toList();
@@ -70,7 +70,7 @@ public class MySQLEngineLoader implements EngineLoader {
     @Override
     public List<FlowDSL> loadPublishedEngines() {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            List<FlowEngineDO> engineList = sqlSession.selectList("com.walle.engine.loader.mapper.FlowEngineMapper.getPublishedEngines");
+            List<WalleEngineDO> engineList = sqlSession.selectList("com.walle.engine.loader.mapper.WalleEngineMapper.getPublishedEngines");
             return engineList.stream()
                     .map(this::engineDoConvertToFlowDSL)
                     .toList();
@@ -84,7 +84,7 @@ public class MySQLEngineLoader implements EngineLoader {
     @Override
     public FlowDSL getEngineByName(String engineName) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            FlowEngineDO engineDO = sqlSession.selectOne("com.walle.engine.loader.mapper.FlowEngineMapper.getEngineByName", engineName);
+            WalleEngineDO engineDO = sqlSession.selectOne("com.walle.engine.loader.mapper.WalleEngineMapper.getEngineByName", engineName);
             return engineDoConvertToFlowDSL(engineDO);
         }
     }
@@ -92,7 +92,7 @@ public class MySQLEngineLoader implements EngineLoader {
     /**
      * convert engineDO to flowDSL
      */
-    private FlowDSL engineDoConvertToFlowDSL(FlowEngineDO flowEngineDO) {
+    private FlowDSL engineDoConvertToFlowDSL(WalleEngineDO flowEngineDO) {
         try {
             FlowDSL flowDSL = new FlowDSL();
             flowDSL.setId(flowEngineDO.getId());

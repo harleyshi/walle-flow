@@ -4,7 +4,7 @@ import com.walle.engine.core.builder.AsyncEngineBuilder;
 import com.walle.engine.core.builder.Builders;
 import com.walle.engine.core.builder.SimpleEngineBuilder;
 import com.walle.engine.common.enums.ExecutionMode;
-import com.walle.engine.common.exception.FlowException;
+import com.walle.engine.common.exception.WalleEngineException;
 import com.walle.engine.domain.model.FlowDSL;
 import com.walle.engine.domain.model.NodeInfo;
 import com.walle.engine.core.Engine;
@@ -47,7 +47,7 @@ public class DSLParser {
                 engineBuilder.components(components);
                 return engineBuilder.buildEngine();
             }
-            default -> throw new FlowException("执行模式不存在");
+            default -> throw new WalleEngineException("执行模式不存在");
         }
     }
 
@@ -75,7 +75,7 @@ public class DSLParser {
         for (NodeInfo node : graph.getNodes()) {
             NodeType nodeType = NodeType.getByCode(node.getType());
             if(nodeType == null){
-                throw new FlowException("节点类型不存在");
+                throw new WalleEngineException("节点类型不存在");
             }
             if(NodeType.START == nodeType || NodeType.END == nodeType){
                 continue;

@@ -1,7 +1,7 @@
 package com.walle.flow.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.walle.flow.admin.domain.entity.FlowEngineDO;
+import com.walle.flow.admin.domain.entity.WalleEngineDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,11 +10,11 @@ import org.apache.ibatis.annotations.Param;
  * @date 2024-09-26 11:27:36
  */
 @Mapper
-public interface FlowEngineMapper extends BaseMapper<FlowEngineDO> {
+public interface WalleEngineMapper extends BaseMapper<WalleEngineDO> {
 
-    FlowEngineDO getEngineByName(@Param("name") String name);
+    WalleEngineDO getEngineByName(@Param("name") String name);
 
-    int updateEngineById(FlowEngineDO entity);
+    int updateEngineById(WalleEngineDO entity);
 
     int changeStatus(@Param("id") Long id, @Param("status") String status);
 }

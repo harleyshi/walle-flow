@@ -9,7 +9,7 @@ import java.util.Date;
  * @date 2024/10/30
  */
 @Data
-public class QueryFlowEngineResp {
+public class QueryWalleEngineResp {
     private String id;
 
     private String name;
